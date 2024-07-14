@@ -3,7 +3,7 @@ export const UPDATE_TODO = "UPDATE_TODO";
 export const DELETE_TODO = "DELETE_TODO";
 export const TOGGLE_TODO = "TOGGLE_TODO";
 export const TOGGLE_TODO_ALL = "TOGGLE_TODO_ALL";
-export const DLETE_TODO_COMPLETED = "DLETE_TODO_COMPLETED";
+export const DELETE_TODO_COMPLETED = "DELETE_TODO_COMPLETED";
 export const SET_FILTER = "SET_FILTER";
 
 export const init = () => {
@@ -67,7 +67,7 @@ export const reducer = (state, action) => {
           completed: action.payload,
         })),
       };
-    case DLETE_TODO_COMPLETED:
+    case DELETE_TODO_COMPLETED:
       return {
         ...state,
         list: state.list.filter((item) => !item.completed),

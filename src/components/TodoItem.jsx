@@ -1,7 +1,44 @@
 import { useContext, useState } from "react";
-import styles from "./TodoItem.module.css";
 import { TodoContext } from "../context";
 import { DELETE_TODO, TOGGLE_TODO, UPDATE_TODO } from "../reducer";
+import styled from "@emotion/styled";
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  height: 65px;
+  gap: 12px;
+  padding: 0 12px;
+`;
+
+const Checkbox = styled.input`
+  width: 16px;
+  height: 16px;
+`;
+
+const Text = styled.p`
+  flex-grow: 1;
+  ${(props) => props.completed && "text-decoration: line-through;"}
+`;
+
+const Button = styled.button`
+  width: 30px;
+  height: 30px;
+  background-color: black;
+  color: white;
+  border: none;
+`;
+
+const Input = styled.input`
+  flex-grow: 1;
+  border: 1px solid gray;
+  border-radius: 6px;
+  background-color: transparent;
+  padding: 4px 12px;
+  font-size: 14px;
+  line-height: 20px;
+  color: white;
+`;
 
 function TodoItem({ id, text, completed }) {
   const { dispatch } = useContext(TodoContext);
@@ -19,36 +56,16 @@ function TodoItem({ id, text, completed }) {
     dispatch({ type: DELETE_TODO, payload: id });
   };
   return (
-    <div className={styles["todo-item"]}>
-      <input
-        type="checkbox"
-        className={styles["todo-item-checkbox"]}
-        checked={completed}
-        onChange={handleToggle}
-      />
+    <Container>
+      <Checkbox type="checkbox" checked={completed} onChange={handleToggle} />
       {edit ? (
-        <input
-          className={styles["todo-edit-input"]}
-          value={text}
-          onChange={handleChange}
-        />
+        <Input value={text} onChange={handleChange} />
       ) : (
-        <p
-          className={[
-            styles["todo-item-text"],
-            completed && styles["completed"],
-          ].join(" ")}
-        >
-          {text}
-        </p>
+        <Text completed={completed}>{text}</Text>
       )}
-      <button className={styles["todo-item-button"]} onClick={handleEdit}>
-        수정
-      </button>
-      <button className={styles["todo-item-button"]} onClick={handleDelete}>
-        삭제
-      </button>
-    </div>
+      <Button onClick={handleEdit}>수정</Button>
+      <Button onClick={handleDelete}>삭제</Button>
+    </Container>
   );
 }
 

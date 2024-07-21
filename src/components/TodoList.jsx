@@ -1,12 +1,45 @@
 import { useContext } from "react";
 import TodoItem from "./TodoItem";
-import styles from "./TodoList.module.css";
 import { TodoContext } from "../context";
 import {
   DELETE_TODO_COMPLETED,
   TOGGLE_TODO,
   TOGGLE_TODO_ALL,
 } from "../reducer";
+import styled from "@emotion/styled";
+
+const Container = styled.div`
+  border: 1px solid gray;
+  border-radius: 6px;
+  margin-top: 16px;
+`;
+
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 12px;
+  gap: 12px;
+`;
+
+const Checkbox = styled.input`
+  width: 16px;
+  height: 16px;
+`;
+
+const Text = styled.div`
+  flex-grow: 1;
+`;
+
+const Button = styled.button`
+  border: 1px solid gray;
+  border-radius: 6px;
+  background-color: transparent;
+  padding: 0 12px;
+  color: white;
+  flex-shrink: 0;
+  height: 30px;
+`;
 
 function TodoList() {
   const { state, dispatch } = useContext(TodoContext);
@@ -31,30 +64,26 @@ function TodoList() {
   const isAllCompleted =
     filteredList.length > 0 && filteredList.every((item) => item.completed);
   return (
-    <div className={styles["todo-list"]}>
-      <div className={styles["todo-header"]}>
-        <input
+    <Container>
+      <Header>
+        <Checkbox
           type="checkbox"
-          className={styles["todo-checkbox"]}
           checked={isAllCompleted}
           onChange={handleToggleAll}
         />
-        <p className={styles["todo-header-text"]}>할 일</p>
+        <Text>할 일</Text>
         {completedCount > 0 && (
-          <button
-            className={styles["todo-header-button"]}
-            onClick={handleDeleteCompleted}
-          >
+          <Button onClick={handleDeleteCompleted}>
             {completedCount}개 선택 삭제
-          </button>
+          </Button>
         )}
-      </div>
+      </Header>
       <div>
         {filteredList.map((item) => (
           <TodoItem key={item.id} {...item} />
         ))}
       </div>
-    </div>
+    </Container>
   );
 }
 

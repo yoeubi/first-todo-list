@@ -3,41 +3,17 @@ import { TodoContext } from "../context";
 import { DELETE_TODO, TOGGLE_TODO, UPDATE_TODO } from "../reducer";
 import styled from "@emotion/styled";
 
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  height: 65px;
-  gap: 12px;
-  padding: 0 12px;
+const itemClassName = `
+  flex items-center h-[65px] gap-[12px] px-[12px] py-[0px]
 `;
-
-const Checkbox = styled.input`
-  width: 16px;
-  height: 16px;
+const checkboxClassName = `w-[16px] h-[16px]`;
+const textClassName = `grow`;
+const buttonClassName = `
+  w-[30px] h-[30px] bg-black text-white border-none
 `;
-
-const Text = styled.p`
-  flex-grow: 1;
-  ${(props) => props.completed && "text-decoration: line-through;"}
-`;
-
-const Button = styled.button`
-  width: 30px;
-  height: 30px;
-  background-color: black;
-  color: white;
-  border: none;
-`;
-
-const Input = styled.input`
-  flex-grow: 1;
-  border: 1px solid gray;
-  border-radius: 6px;
-  background-color: transparent;
-  padding: 4px 12px;
-  font-size: 14px;
-  line-height: 20px;
-  color: white;
+const inputClassName = `
+  grow border-[1px] border-solid border-gray-500 rounded-[6px]
+  bg-transparent px-[12px] py-[4px] text-[14px] leading-[20px] text-white;
 `;
 
 function TodoItem({ id, text, completed }) {
@@ -56,16 +32,34 @@ function TodoItem({ id, text, completed }) {
     dispatch({ type: DELETE_TODO, payload: id });
   };
   return (
-    <Container>
-      <Checkbox type="checkbox" checked={completed} onChange={handleToggle} />
+    <div className={itemClassName}>
+      <input
+        className={checkboxClassName}
+        type="checkbox"
+        checked={completed}
+        onChange={handleToggle}
+      />
       {edit ? (
-        <Input value={text} onChange={handleChange} />
+        <input
+          className={inputClassName}
+          value={text}
+          onChange={handleChange}
+        />
       ) : (
-        <Text completed={completed}>{text}</Text>
+        <p
+          className={[textClassName, completed && "line-through"].join(" ")}
+          completed={completed}
+        >
+          {text}
+        </p>
       )}
-      <Button onClick={handleEdit}>수정</Button>
-      <Button onClick={handleDelete}>삭제</Button>
-    </Container>
+      <button className={buttonClassName} onClick={handleEdit}>
+        수정
+      </button>
+      <button className={buttonClassName} onClick={handleDelete}>
+        삭제
+      </button>
+    </div>
   );
 }
 

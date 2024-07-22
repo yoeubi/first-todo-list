@@ -1,7 +1,6 @@
-import { useContext, useState } from "react";
-import { TodoContext } from "../context";
-import { DELETE_TODO, TOGGLE_TODO, UPDATE_TODO } from "../reducer";
-import styled from "@emotion/styled";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { deleteTodo, toggleTodo, updateTodo } from "../store/todoSlice";
 
 const itemClassName = `
   flex items-center h-[65px] gap-[12px] px-[12px] py-[0px]
@@ -17,19 +16,19 @@ const inputClassName = `
 `;
 
 function TodoItem({ id, text, completed }) {
-  const { dispatch } = useContext(TodoContext);
+  const dispatch = useDispatch();
   const [edit, setEdit] = useState(false);
   const handleEdit = () => {
     setEdit((prev) => !prev);
   };
   const handleChange = (e) => {
-    dispatch({ type: UPDATE_TODO, payload: { id, text: e.target.value } });
+    dispatch(updateTodo({ id, text: e.target.value }));
   };
   const handleToggle = () => {
-    dispatch({ type: TOGGLE_TODO, payload: id });
+    dispatch(toggleTodo(id));
   };
   const handleDelete = () => {
-    dispatch({ type: DELETE_TODO, payload: id });
+    dispatch(deleteTodo(id));
   };
   return (
     <div className={itemClassName}>

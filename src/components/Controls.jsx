@@ -1,7 +1,6 @@
-import { useContext, useState } from "react";
-import { TodoContext } from "../context";
-import { ADD_TODO, SET_FILTER } from "../reducer";
-
+import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { addTodo, setFilter } from "../store/todoSlice";
 const inputClassName = `grow border-[1px] border-solid border-gray-500 rounded-[6px] bg-transparent
   px-[12px] py-[4px] text-[14px] leading-[20px] text-white;
   `;
@@ -13,17 +12,18 @@ const commonClassName = `
 `;
 
 function Controls() {
-  const { state, dispatch } = useContext(TodoContext);
+  const state = useSelector((state) => state.todo);
+  const dispatch = useDispatch();
   const [text, setText] = useState("");
   const handleChange = (e) => {
     setText(e.target.value);
   };
   const handleSubmit = () => {
-    dispatch({ type: ADD_TODO, payload: text });
+    dispatch(addTodo(text));
     setText("");
   };
   const handleChangeFilterType = (e) => {
-    dispatch({ type: SET_FILTER, payload: e.target.value });
+    dispatch(setFilter(e.target.value));
   };
   return (
     <div className="flex gap-[6px] h-[30px]">

@@ -1,12 +1,6 @@
-import { useContext } from "react";
 import TodoItem from "./TodoItem";
-import { TodoContext } from "../context";
-import {
-  DELETE_TODO_COMPLETED,
-  TOGGLE_TODO,
-  TOGGLE_TODO_ALL,
-} from "../reducer";
-import styled from "@emotion/styled";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteTodoCompleted, toggleTodoAll } from "../store/todoSlice";
 
 const listClassName = `
   border-[1px] border-solid border-gray-500
@@ -20,9 +14,6 @@ const headerClassName = `
 const checkboxClassName = `
   w-[16px] h-[16px]
 `;
-const Text = styled.div`
-  flex-grow: 1;
-`;
 const textClassName = "grow";
 const buttonClassName = `
   border-[1px] border-solid border-gray-500
@@ -31,14 +22,15 @@ const buttonClassName = `
 `;
 
 function TodoList() {
-  const { state, dispatch } = useContext(TodoContext);
+  const state = useSelector((state) => state.todo);
+  const dispatch = useDispatch();
 
   const completedCount = state.list.filter((item) => item.completed).length;
   const handleToggleAll = (e) => {
-    dispatch({ type: TOGGLE_TODO_ALL, payload: e.target.checked });
+    dispatch(toggleTodoAll(e.target.checked));
   };
   const handleDeleteCompleted = () => {
-    dispatch({ type: DELETE_TODO_COMPLETED });
+    dispatch(deleteTodoCompleted());
   };
   const filteredList = state.list.filter((item) => {
     switch (state.filterType) {
